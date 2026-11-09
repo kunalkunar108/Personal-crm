@@ -1,33 +1,40 @@
 # Personal CRM — AI Sales Desk
 
-A private, single-owner CRM for managing leads, sales conversations, follow-ups, and clients across all business lines.
+Private single-owner CRM for managing prospects, sales conversations, follow-ups, and clients across GymOS, website development, CURAKART, and other business lines.
 
-## Decisions configured
-- **Autonomy:** Hybrid. AI may research, summarize, draft, and recommend; external actions require approval.
-- **Target clients:** All business types, tagged by business line (GymOS, website development, CURAKART, other).
-- **Calling:** Human call logging plus an AI voice calling integration, disabled until consent and approval controls are configured.
+## Configured decisions
+- **Autonomy:** Hybrid. AI research, summaries, drafts, and recommendations may run independently; external actions remain approval-gated.
+- **Target clients:** All business client types, tagged by business line.
+- **Calling:** Both human call logging and future AI voice calling. AI calls remain disabled pending provider setup, channel eligibility, consent checks, and explicit approval.
 
 ## Stack
-- Next.js App Router + TypeScript
-- Supabase Auth + Postgres + Row Level Security
-- Vercel AI SDK + AI Gateway (AI runtime to be implemented)
-- Vercel deployment (after local verification)
+- Next.js 15 App Router + TypeScript
+- Supabase Auth with cookie-based SSR sessions
+- Supabase Postgres with owner-scoped Row Level Security
 
-## Start locally
-1. Install Node.js 20.9+.
-2. Copy .env.example to .env.local and fill the Supabase URL and publishable/anon key.
-3. Install dependencies with npm install.
-4. Start with npm run dev.
+## Local setup
+1. Install Node.js 20.9 or newer.
+2. Copy .env.example to .env.local.
+3. In Supabase Dashboard → Project Settings → API, copy the Project URL and publishable key into .env.local.
+4. In Supabase Dashboard → Authentication → Users, create your owner account. Public signup is intentionally not exposed.
+5. In Supabase SQL Editor, review and run supabase/migrations/0001_initial_schema.sql against the intended project. This code change does not apply SQL to your project.
+6. Run npm install, then npm run dev.
+7. Open /login and sign in with the owner account.
 
-The current dashboard is a UI foundation; live data, authentication, and AI actions are not connected yet.
+## Current features
+- Password sign-in and sign-out using Supabase Auth.
+- Protected dashboard and cookie session refresh middleware.
+- Lead CRUD: create, list, edit, delete; business line, pipeline stage, estimated value, and contact fields.
+- Client CRUD: create, list, edit, delete; business line, lifecycle, contract value, and payment status.
+- Dashboard counts and pipeline stage totals from Supabase.
+- Server-side validation and owner_id assignment; database RLS remains the final access boundary.
 
-## Database
-Review supabase/migrations/0001_initial_schema.sql, then run it in the Supabase SQL Editor for the CRM's initial tables and owner-scoped RLS. Do not run it until you have selected the intended Supabase project and reviewed the SQL. Never put a service-role key in a NEXT_PUBLIC_ variable.
+## Security and AI boundaries
+- No service-role key is used or needed by the browser.
+- Signup is not exposed publicly; create the single owner account in Supabase Auth.
+- Mutations validate input server-side and derive owner_id from the verified auth user.
+- AI agents, external messages, and AI voice calls are not enabled in this phase. Later external actions must check channel eligibility, permission/consent, opt-out status, and explicit approval of the exact action.
+- See docs/architecture.md and docs/agent-policy.md.
 
-## Architecture and safety
-- See docs/architecture.md for system design and delivery phases.
-- See docs/agent-policy.md for autonomy, approvals, voice, and outreach restrictions.
-- Unknown consent is not consent. AI-generated messages and AI calls must not be sent/placed without the required checks and explicit approval.
-
-## Current status
-Foundation branch: feat/crm-foundation. Next: local build verification, Supabase auth/client integration, and lead/client CRUD.
+## Verification
+Run npm run typecheck, npm run lint, and npm run build after installing dependencies. This change has not been deployed and does not apply the SQL migration automatically.
