@@ -1,0 +1,2 @@
+"use client";
+export default function ErrorPage({reset}:{error:Error&{digest?:string};reset:()=>void}){return <main className="auth-shell"><section className="auth-card"><span className="eyebrow">WORKSPACE ERROR</span><h1>Something went wrong.</h1><p className="auth-intro">The CRM could not complete this request. Try again. If the problem continues, check your Supabase configuration and database migration.</p><button className="primary" onClick={()=>reset()}>Try again</button></section></main>;}
