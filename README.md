@@ -13,7 +13,7 @@ Private single-owner CRM for managing prospects, sales conversations, follow-ups
 - Supabase Postgres with owner-scoped Row Level Security
 
 ## Local setup
-1. Install Node.js 20.9 or newer.
+1. Install Node.js 22 or newer.
 2. Copy .env.example to .env.local.
 3. In Supabase Dashboard → Project Settings → API, copy the Project URL and publishable key into .env.local.
 4. In Supabase Dashboard → Authentication → Users, create your owner account. Public signup is intentionally not exposed.
