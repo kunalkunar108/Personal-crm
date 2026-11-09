@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="app-shell"><div className="eyebrow">LOADING CLIENTS</div><div className="skeleton title-skeleton"/><div className="skeleton panel-skeleton"/><div className="skeleton panel-skeleton"/></main>;}
